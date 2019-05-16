@@ -1,0 +1,25 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "programs",
+    "database": "db",
+    "host": "192.168.20.158",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "logging": true,
+    "dialectOptions": {
+      "ssl": true
+    }
+  }
+}
