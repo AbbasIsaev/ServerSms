@@ -4,6 +4,13 @@
  * Module dependencies.
  */
 
+const env = process.env.NODE_ENV || 'development';
+if (env === 'development') {
+  const path = require('path');
+  const pathConfig = path.resolve(__dirname, '../config/.env.dev');
+  require('dotenv').config({path: pathConfig});
+}
+
 //========ORM========
 const models = require('../models');
 //================
