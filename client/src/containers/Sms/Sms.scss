@@ -1,0 +1,32 @@
+.Sms {
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
+  flex-grow: 1;
+  width: 100%;
+  background: linear-gradient(90deg, #94b20f 0%, #7969e6 100%);
+}
+
+/* Задает стиль ближайшему ребенку div */
+.Sms > div {
+  width: 100%;
+  max-width: 600px;
+  padding: 0 20px;
+}
+
+.Sms h1 {
+  color: #fff;
+  text-align: center;
+}
+
+.SmsForm {
+  box-shadow: 2px 2px 2px rgba(0,0,0,.5);
+  padding: 15px;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+}
+
+.Sms p {
+  color: #6410ff;
+}

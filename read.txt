@@ -1,0 +1,46 @@
+﻿// Инструмент перезагрузки сервера при изменении файлов
+npm install nodemon --save-dev
+//Запуск скриптов, которые устанавливают и используют переменные среды на разных платформах
+npm install --save-dev cross-env
+
+
+// ORM sequelize
+npm install --save sequelize
+npm install --save pg pg-hstore # Postgres
+npm install --save sequelize-cli
+// To create an empty project you will need to execute init command
+npx sequelize init
+npx sequelize model:generate --name sms --attributes id:integer,phone:string,text:string
+
+
+=========================================На клиенте=========================================
+// Проверка на типы, email, phone и др.
+npm i is_js
+// Отправка запросов на сервер
+npm i axios
+// Анимация загрузки
+https://loading.io/css
+
+// Поддержка sass, файлов .scss
+yarn add node-sass
+
+В файле webpack.config.js добавить поддержку модулей sass: modules: true, getLocalIdent: getCSSModuleLocalIdent,
+		{
+		  test: sassRegex,
+		  exclude: sassModuleRegex,
+		  use: getStyleLoaders(
+			{
+			  importLoaders: 2,
+			  sourceMap: isEnvProduction && shouldUseSourceMap,
+			  modules: true,
+			  getLocalIdent: getCSSModuleLocalIdent,
+			},
+			'sass-loader'
+		  ),
+		  // Don't consider CSS imports dead code even if the
+		  // containing package claims to have no side effects.
+		  // Remove this when webpack adds a warning or an error for this.
+		  // See https://github.com/webpack/webpack/issues/6571
+		  sideEffects: true,
+		},
+=========================================
