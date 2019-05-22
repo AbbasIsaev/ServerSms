@@ -64,7 +64,7 @@
     "workbox-webpack-plugin": "4.2.0"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "cross-env API_URL=http://localhost:5500 node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },
