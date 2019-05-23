@@ -92,4 +92,6 @@ yarn add node-sass
 
 // Redux — библиотека управления состоянием для приложений, написанных на JavaScript
 npm i redux react-redux redux-thunk
+// Роутинг
+npm i react-router-dom
 =========================================
