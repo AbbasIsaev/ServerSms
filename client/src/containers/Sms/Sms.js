@@ -3,13 +3,10 @@ import classes from './Sms.scss'
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 import is from "is_js"
-import axios from "axios"
 import Loader from "../../components/UI/Loader/Loader";
-
-import {toast} from 'react-toastify';
 import TextArea from "../../components/UI/TextArea/TextArea";
-import {Enam} from '../../utils/Enam';
-import {ApiUrl} from "../../ApiUrl";
+import {connect} from "react-redux";
+import {createSms, fetchCountSms} from "../../store/actions/sms";
 
 class Sms extends Component {
   state = {
@@ -42,10 +39,10 @@ class Sms extends Component {
       },
       date: {
         label: 'Дата',
-        value: '',
+        value: new Date().toISOString().slice(0, 10),
         type: 'date',
         errorMessage: 'Введите дату отправки',
-        valid: false,
+        valid: true,
         touched: false,
         validation: {
           required: true
@@ -53,21 +50,19 @@ class Sms extends Component {
       },
       time: {
         label: 'Время',
-        value: '',
+        value: new Date().toLocaleTimeString(),
         type: 'time',
         errorMessage: 'Введите время отправки',
-        valid: false,
+        valid: true,
         touched: false,
         validation: {
           required: true
         }
       }
-    },
-    loading: true,
-    countSms: 0
+    }
   };
 
-  sendHandler = async () => {
+  createHandler = async () => {
     const date = this.state.formControls.date.value;
     const time = this.state.formControls.time.value.split(":");
 
@@ -78,12 +73,7 @@ class Sms extends Component {
       text: this.state.formControls.text.value,
       dateSent: dateSent
     };
-    try {
-      await axios.post(ApiUrl.base + "/api/sms", newSms);
-      toast.success(Enam.SAVE);
-    } catch (error) {
-      toast.error(Enam.Error(error));
-    }
+    this.props.createSms(newSms);
   };
 
   submitHandler = event => {
@@ -172,21 +162,7 @@ class Sms extends Component {
   }
 
   componentDidMount() {
-    axios.get(ApiUrl.base + "/api/sms/getNotSend")
-      .then(response => {
-        const countSms = response.data.length;
-        this.setState({
-          countSms
-        });
-      })
-      .catch(error => {
-        toast.error(Enam.Error(error));
-      })
-      .finally(() => {
-        this.setState({
-          loading: false
-        })
-      });
+    this.props.fetchCountSms();
   }
 
   render() {
@@ -197,17 +173,21 @@ class Sms extends Component {
           <form onSubmit={this.submitHandler} className={classes.SmsForm}>
             {this.renderInputs()}
 
-            <Button
-              type="success"
-              onClick={this.sendHandler}
-              disabled={!this.state.isFormValid}
-            >
-              Отправить
-            </Button>
+            {this.props.loadingButton
+              ? <Loader/>
+              :
+              <Button
+                type="success"
+                onClick={this.createHandler}
+                disabled={!this.state.isFormValid}
+              >
+                Сохранить
+              </Button>
+            }
           </form>
-          {this.state.loading
+          {this.props.loading
             ? <Loader/>
-            : <p>Не отправленных: {this.state.countSms}</p>
+            : <p>Не отправленных: {this.props.countSms}</p>
           }
         </div>
       </div>
@@ -216,4 +196,19 @@ class Sms extends Component {
 
 }
 
-export default Sms
+function mapStateToProps(state) {
+  return {
+    loading: state.sms.loading,
+    loadingButton: state.sms.loadingButton,
+    countSms: state.sms.countSms
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchCountSms: () => dispatch(fetchCountSms()),
+    createSms: (newSms) => dispatch(createSms(newSms))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sms)

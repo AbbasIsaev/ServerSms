@@ -1,4 +1,5 @@
-﻿// Инструмент перезагрузки сервера при изменении файлов
+﻿=========================================На сервере=========================================
+// Инструмент перезагрузки сервера при изменении файлов
 npm install nodemon --save-dev
 //Запуск скриптов, которые устанавливают и используют переменные среды на разных платформах
 npm install --save-dev cross-env
@@ -12,6 +13,17 @@ npm install --save sequelize-cli
 npx sequelize init
 npx sequelize model:generate --name sms --attributes id:integer,phone:string,text:string
 
+// Развертывание проекта в production на heroku
+В файле package.json добавлен скрипт
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run client-install && npm run client-build"
+и версии инструментов для запуска
+    "engines": {
+        "node": "11.3.0",
+        "npm": "6.4.1"
+    },
+
+=========================================
+
 
 =========================================На клиенте=========================================
 // Проверка на типы, email, phone и др.
@@ -24,7 +36,7 @@ https://loading.io/css
 // Поддержка sass, файлов .scss
 yarn add node-sass
 
-В файле webpack.config.js добавить поддержку модулей sass: modules: true, getLocalIdent: getCSSModuleLocalIdent,
+В файле webpack.config.js добавлена поддержка модулей sass: modules: true, getLocalIdent: getCSSModuleLocalIdent
 		{
 		  test: sassRegex,
 		  exclude: sassModuleRegex,
@@ -43,4 +55,41 @@ yarn add node-sass
 		  // See https://github.com/webpack/webpack/issues/6571
 		  sideEffects: true,
 		},
+
+// npm install --save-dev cross-env
+В файле env.js добавлена переменная окружения API_URL: process.env.API_URL || '',
+описание запуска см. в package.json -> "start": "cross-env API_URL=http://localhost:5500 node scripts/start.js"
+        function getClientEnvironment(publicUrl) {
+          const raw = Object.keys(process.env)
+            .filter(key => REACT_APP.test(key))
+            .reduce(
+              (env, key) => {
+                env[key] = process.env[key];
+                return env;
+              },
+              {
+                // Useful for determining whether we’re running in production mode.
+                // Most importantly, it switches React into the correct mode.
+                NODE_ENV: process.env.NODE_ENV || 'development',
+                // Useful for resolving the correct path to static assets in `public`.
+                // For example, <img src={process.env.PUBLIC_URL + '/img/logo.png'} />.
+                // This should only be used as an escape hatch. Normally you would put
+                // images into the `src` and `import` them in code to get their paths.
+                PUBLIC_URL: publicUrl,
+                API_URL: process.env.API_URL || '',
+              }
+            );
+          // Stringify all values so we can feed into Webpack DefinePlugin
+          const stringified = {
+            'process.env': Object.keys(raw).reduce((env, key) => {
+              env[key] = JSON.stringify(raw[key]);
+              return env;
+            }, {}),
+          };
+
+          return { raw, stringified };
+        }
+
+// Redux — библиотека управления состоянием для приложений, написанных на JavaScript
+npm i redux react-redux redux-thunk
 =========================================
