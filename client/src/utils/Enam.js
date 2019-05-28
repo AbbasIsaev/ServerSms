@@ -1,5 +1,6 @@
 export class Enam {
   static ERROR_UNKNOWN = 'Неизвестная ошибка';
+  static ERROR_CONNECT = 'Нет подключения с сервером';
   static SAVE = 'Сохранено';
 
   static Error(error) {

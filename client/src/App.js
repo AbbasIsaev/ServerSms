@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import {Route, Switch} from "react-router-dom";
 import Auth from "./containers/Auth/Auth";
 import NotFound from "./containers/404/NotFound";
+import Log from "./containers/Log/Log";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Sms}/>
           <Route path="/sms" component={Sms}/>
+          <Route path="/log" component={Log}/>
           <Route path="/auth" component={Auth}/>
           {/*<Redirect from="/sms2" to="/sms"/>*/}
           <Route component={NotFound}/>

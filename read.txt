@@ -22,6 +22,8 @@ npx sequelize model:generate --name sms --attributes id:integer,phone:string,tex
         "npm": "6.4.1"
     },
 
+// Сокеты
+npm install socket.io
 =========================================
 
 
@@ -94,4 +96,7 @@ yarn add node-sass
 npm i redux react-redux redux-thunk
 // Роутинг
 npm i react-router-dom
+
+// Установить клиентскую версию библиотеки Socket.io
+npm i --save socket.io-client
 =========================================

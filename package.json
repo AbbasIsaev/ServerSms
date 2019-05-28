@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "cross-env NODE_ENV=development npm run start",
+    "dev": "cross-env NODE_ENV=development nodemon ./bin/www",
     "client-install": "npm install --prefix ./client",
     "client-build": "npm run build --prefix ./client",
     "prod": "npm run client-build && cross-env DEBUG=serversms:* PORT=7700 NODE_ENV=production DATABASE_URL=postgres://postgres:programs@192.168.20.158:5432/db npm run start",
@@ -27,7 +27,8 @@
     "pg": "^7.10.0",
     "pg-hstore": "^2.3.2",
     "sequelize": "^5.7.1",
-    "sequelize-cli": "^5.4.0"
+    "sequelize-cli": "^5.4.0",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
