@@ -36,10 +36,14 @@ const server = http.createServer(app);
 const io = socketIO(server);
 const users = require('../io/users')();
 const logs = require('../io/logs')();
+const colors = {
+  red: 'red',
+  green: 'green'
+};
 
-const message = (name, text, room) => {
-  const mes = {name, text, date: new Date(), room};
-  logs.add(mes.name, mes.text, mes.date, room);
+const message = (name, text, room, color) => {
+  const mes = {name, text, date: new Date(), room, color};
+  logs.add(mes.name, mes.text, mes.date, room, color);
   return mes;
 };
 
@@ -58,14 +62,14 @@ io.on('connection', (socket) => {
     users.add(socket.id, user.name, user.room);
     // socket.emit('message:new', message('Robot', `Logging ${userName}`));
     // Отпарвка всем подключенным клиентам кроме меня в одной комнате
-    socket.broadcast.to(user.room).emit('message:new', message('Robot', `Подключился ${user.name}`, user.room));
+    socket.broadcast.to(user.room).emit('message:new', message('Robot', `Подключился ${user.name}`, user.room, colors.green));
   });
 
   socket.on('message:create', (data, cb) => {
     if (!data) {
       cb(`Message can't be empty`)
     } else {
-      const user = users.get(data.id);
+      const user = users.get(socket.id);
       if (user) {
         // Оправка всем подключенным клиентам в одной комнате
         io.to(user.room).emit('message:new', message(user.name, data.text, user.room));
@@ -74,10 +78,18 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('message:statistic', (text) => {
+    const user = users.get(socket.id);
+    if (user) {
+      // Оправка всем подключенным клиентам в одной комнате
+      io.to(user.room).emit('message:new', message(user.name, text, user.room));
+    }
+  });
+
   socket.on('disconnect', () => {
     const user = users.remove(socket.id);
     if (user) {
-      io.to(user.room).emit('message:new', message('Robot', `Отключился ${user.name}`, user.room));
+      io.to(user.room).emit('message:new', message('Robot', `Отключился ${user.name}`, user.room, colors.red));
     }
   });
 });

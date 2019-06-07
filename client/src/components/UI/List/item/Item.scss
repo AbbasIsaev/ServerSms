@@ -3,4 +3,19 @@
   border-radius: 5px;
   padding: 5px 10px;
   margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.green {
+  background: rgba(161, 241, 69, 1);
+}
+
+.red {
+  background: rgba(240, 87, 108, 1);
+}
+
+.primary {
+  background: #2884f6;
+  color: #fff;
 }

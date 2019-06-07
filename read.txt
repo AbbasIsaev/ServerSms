@@ -24,6 +24,11 @@ npx sequelize model:generate --name sms --attributes id:integer,phone:string,tex
 
 // Сокеты
 npm install socket.io
+
+// Авторизация стратегия Google
+npm install passport passport-google-oauth
+// middleware cookie. Хранит информацию об авторизации
+npm i cookie-session
 =========================================
 
 

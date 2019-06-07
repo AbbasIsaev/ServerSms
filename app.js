@@ -1,11 +1,14 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const passport = require('passport');
+const cookieSession = require('cookie-session');
+
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/sms');
+const smsRouter = require('./routes/sms');
+const authRouter = require('./routes/auth');
 
 const app = express();
 
@@ -14,10 +17,27 @@ app.use(logger('dev'));
 app.use(require('cors')());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/sms', usersRouter);
+//================Авторизация================
+app.use(cookieSession({
+  maxAge: eval(process.env.COOKIE_MAX_AGE), // Время жизни куки. Вычисляет значение в строке
+  name: 'sessionSmsPro',
+  keys: [process.env.COOKIE_KEY]
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+require('./middleware/passportGoogle')(passport);
+const {authCheck} = require('./middleware/passportGoogle');
+
+app.use('/auth', authRouter);
+app.use('/profile', authCheck, (req, res) => {
+  res.send('Profile: ' + JSON.stringify(req.user));
+});
+//================
+
+app.use('/api/sms', authCheck, smsRouter);
 
 //================Развертывание приложения в production================
 if (process.env.NODE_ENV === 'production') {

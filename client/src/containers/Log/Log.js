@@ -45,7 +45,9 @@ class Log extends Component {
   addAnswer(message) {
     // Клонирование массива
     const answers = [...this.state.answers];
-    answers.push({text: JSON.stringify(message)});
+    answers.push({
+      ...message
+    });
     this.setState({
       answers
     });
@@ -54,7 +56,6 @@ class Log extends Component {
 
   createHandler = () => {
     const message = {
-      id: this.state.user.id,
       text: "Мое сообщение click"
     };
     socket.setDate(message, (error) => {

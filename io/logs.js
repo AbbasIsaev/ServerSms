@@ -3,10 +3,10 @@ class Logs {
     this.logs = {};
   }
 
-  add(name, text, date, room) {
+  add(name, text, date, room, color) {
     if (this.logs[room]) {
       const answers = [...this.logs[room]];
-      answers.push({name, text, date, room});
+      answers.push({name, text, date, room, color});
       this.logs[room] = answers;
     } else {
       this.logs[room] = [];

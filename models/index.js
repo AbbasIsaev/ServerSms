@@ -16,6 +16,7 @@ if (config.use_env_variable) {
 
 const db = {
   sms: sequelize.import('./sms'),
+  users: sequelize.import('./users'),
 };
 
 fs
