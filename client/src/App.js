@@ -7,6 +7,7 @@ import {Route, Switch} from "react-router-dom";
 import Auth from "./containers/Auth/Auth";
 import NotFound from "./containers/404/NotFound";
 import Log from "./containers/Log/Log";
+import Main from "./containers/Main/Main";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
       />
       <Layout>
         <Switch>
-          <Route path="/" exact component={Sms}/>
+          <Route path="/" exact component={Main}/>
           <Route path="/sms" component={Sms}/>
           <Route path="/log" component={Log}/>
           <Route path="/auth" component={Auth}/>

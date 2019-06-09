@@ -20,3 +20,10 @@ module.exports.fileNotFound = (res, error) => {
         message: 'Файл не найден'
     })
 };
+
+module.exports. unauthorized = (res) => {
+    res.status(401).json({
+        success: false,
+        message: 'Доступ запрещен, пожалуйста войдите в систему'
+    })
+};

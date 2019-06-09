@@ -1,5 +1,6 @@
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const models = require('../models');
+const errorHandler = require('../utils/errorHandler');
 
 // Use the GoogleStrategy within Passport.
 //   Strategies in Passport require a `verify` function, which accept
@@ -52,6 +53,5 @@ module.exports.authCheck = function (req, res, next) {
   // if (req.user) {
   //   return next();
   // }
-  //TODO
-  res.json('Не авторизован');
+  errorHandler.unauthorized(res);
 };
