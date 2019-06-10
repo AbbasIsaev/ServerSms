@@ -104,4 +104,6 @@ npm i react-router-dom
 
 // Установить клиентскую версию библиотеки Socket.io
 npm i --save socket.io-client
+
+// Подключение стилей, иконки https://fontawesome.com/how-to-use/on-the-web/setup/hosting-font-awesome-yourself
 =========================================
