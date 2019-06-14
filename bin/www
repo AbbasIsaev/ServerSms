@@ -47,6 +47,10 @@ const message = (name, text, room, color) => {
   return mes;
 };
 
+// Connecting sockets to the server and adding them to hthe request
+// so that we can access them later in the controller
+app.set('io', io);
+
 io.on('connection', (socket) => {
   console.log(`IO connection id=${socket.id}`);
 

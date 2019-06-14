@@ -22,18 +22,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 //================Авторизация================
 app.use(cookieSession({
   maxAge: eval(process.env.COOKIE_MAX_AGE), // Время жизни куки. Вычисляет значение в строке
-  name: 'sessionSmsPro',
+  name: process.env.COOKIE_NAME,
   keys: [process.env.COOKIE_KEY]
 }));
 
 app.use(passport.initialize());
-app.use(passport.session());
+const session = passport.session();
+app.use(session);
 require('./middleware/passportGoogle')(passport);
 const {authCheck} = require('./middleware/passportGoogle');
 
 app.use('/auth', authRouter);
 app.use('/profile', authCheck, (req, res) => {
-  res.send('Profile: ' + JSON.stringify(req.user));
+  const data = {
+    user: req.user,
+    reqH: req.headers.cookie,
+    resH: res.req.headers.cookie
+  };
+  res.send(data);
 });
 //================
 
@@ -50,12 +56,13 @@ if (process.env.NODE_ENV === 'production') {
   });
 } else {
   app.use("/favicon.ico", express.static('favicon.ico'));
-  // view engine setup
-  app.set('views', path.join(__dirname, 'views'));
-  app.set('view engine', 'ejs');
   app.use('/', indexRouter);
 }
 //================
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

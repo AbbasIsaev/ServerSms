@@ -12,7 +12,7 @@
     "dev": "cross-env NODE_ENV=development nodemon ./bin/www --ignore ./client",
     "client-install": "npm install --prefix ./client",
     "client-build": "npm run build --prefix ./client",
-    "prod": "npm run client-build && cross-env DEBUG=serversms:* PORT=7700 NODE_ENV=production DATABASE_URL=postgres://postgres:programs@192.168.20.158:5432/db npm run start",
+    "prod": "npm run client-build && cross-env DEBUG=serversms:* PORT=7700 NODE_ENV=production DATABASE_URL=postgres://postgres:programs@192.168.20.158:5432/db COOKIE_NAME=sessionSmsPro COOKIE_MAX_AGE=24*60*60*1000 npm run start",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run client-install && npm run client-build"
   },
   "dependencies": {

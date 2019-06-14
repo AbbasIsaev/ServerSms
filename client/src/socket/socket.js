@@ -39,6 +39,16 @@ class Socket {
     })
   }
 
+  static getAuth(provider, cb) {
+    socket.on(`auth:${provider}`, data => {
+      cb(null, data)
+    });
+  }
+
+  static getSocketId() {
+    return socket.id
+  }
+
 }
 
 export default Socket

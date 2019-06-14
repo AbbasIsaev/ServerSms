@@ -12,7 +12,7 @@ module.exports = function (passport) {
   });
 
   passport.deserializeUser(function (id, done) {
-    models.users.findByPk(id)
+    models.users.findByPk(id, {attributes: ['id', 'displayName']})
       .then((user) => {
         done(null, user);
       })
@@ -37,7 +37,11 @@ module.exports = function (passport) {
         defaults: newData
       })
         .then(([user, created]) => {
-          return done(null, user);
+          const userNew = {
+            id: user.id,
+            displayName: user.displayName
+          };
+          return done(null, userNew);
         })
         .catch(error => {
           return done(error, false);

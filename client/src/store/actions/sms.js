@@ -42,7 +42,7 @@ export function createSms(newSms) {
   }
 }
 
-export function stateChange(type, newObject) {
+function stateChange(type, newObject) {
   return {
     type,
     newObject
