@@ -2,10 +2,9 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import socket from "../../socket/socket";
 import Button from "../../components/UI/Button/Button";
-import {setLoadingButton, setUser} from "../../store/actions/auth";
+import {setLoadingButton, setUserAndToken, TOKEN_KEY} from "../../store/actions/auth";
 import {connect} from "react-redux";
 import Loader from "../../components/UI/Loader/Loader";
-// import Cookies from "universal-cookie";
 
 class Auth extends Component {
 
@@ -13,27 +12,17 @@ class Auth extends Component {
     const {provider} = this.props;
 
     socket.getAuth(provider, (err, data) => {
-      // console.log(data);
-      // // TODO
-      // if (data.cookie) {
-      //   const cooks = data.cookie.split('; ');
-      //
-      //   console.log(cooks);
-      //   cooks.map(item => {
-      //     const index = item.indexOf('=');
-      //     const cookies = new Cookies();
-      //     let name = item.substr(0, index);
-      //     let value = item.substr(index + 1);
-      //     cookies.set(name + '2', value, {path: '/'});
-      //     return item;
-      //   });
-      // }
-
-      this.props.setUser(data.user);
+      const {user, token} = data;
+      localStorage.setItem(TOKEN_KEY, token);
+      this.props.setUserAndToken(user, token);
       if (this.popup) {
         this.popup.close()
       }
     })
+  }
+
+  componentWillUnmount() {
+    socket.offAll();
   }
 
   openPopup() {
@@ -112,7 +101,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setLoadingButton: (strategy, flag) => dispatch(setLoadingButton(strategy, flag)),
-    setUser: (user) => dispatch(setUser(user))
+    setUserAndToken: (user, token) => dispatch(setUserAndToken(user, token))
   }
 }
 

@@ -9,6 +9,7 @@ const cookieSession = require('cookie-session');
 const indexRouter = require('./routes/index');
 const smsRouter = require('./routes/sms');
 const authRouter = require('./routes/auth');
+const profileRouter = require('./routes/profile');
 
 const app = express();
 
@@ -30,20 +31,13 @@ app.use(passport.initialize());
 const session = passport.session();
 app.use(session);
 require('./middleware/passportGoogle')(passport);
-const {authCheck} = require('./middleware/passportGoogle');
+const authCheckJwt = passport.authenticate('jwt', {session: false});
 
 app.use('/auth', authRouter);
-app.use('/profile', authCheck, (req, res) => {
-  const data = {
-    user: req.user,
-    reqH: req.headers.cookie,
-    resH: res.req.headers.cookie
-  };
-  res.send(data);
-});
 //================
 
-app.use('/api/sms', authCheck, smsRouter);
+app.use('/api/profile', authCheckJwt, profileRouter);
+app.use('/api/sms', authCheckJwt, smsRouter);
 
 //================Развертывание приложения в production================
 if (process.env.NODE_ENV === 'production') {

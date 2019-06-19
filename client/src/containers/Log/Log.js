@@ -3,15 +3,11 @@ import socket from "../../socket/socket";
 import List from "../../components/UI/List/List";
 import ScrollButton from "../../components/UI/ScrollButton/ScrollButton";
 import classes from "./Log.scss";
+import {connect} from "react-redux";
 
 class Log extends Component {
   state = {
-    answers: [],
-    user: {
-      id: null,
-      name: 'Dragon',
-      room: 'Main'
-    }
+    answers: []
   };
 
   constructor(props) {
@@ -20,17 +16,15 @@ class Log extends Component {
     this.refAnswers = React.createRef();
   }
 
+  componentWillUnmount() {
+    socket.offAll();
+  }
+
   componentDidMount() {
-    socket.setJoin(this.state.user, (err, data) => {
+    socket.setJoin(this.props.user, (err, data) => {
       if (err) {
         this.addAnswer(err);
       } else {
-        const user = {...this.state.user};
-        user.id = data.userId;
-        this.setState({
-          user
-        });
-
         data.logs.map(item => {
           return this.addAnswer(item);
         });
@@ -92,4 +86,10 @@ function scrollToBottom(node) {
   window.scrollTo(0, node.current.scrollHeight);
 }
 
-export default Log
+function mapStateToProps(state) {
+  return {
+    user: state.auth.user
+  }
+}
+
+export default connect(mapStateToProps, null)(Log)

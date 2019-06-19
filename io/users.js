@@ -3,9 +3,9 @@ class Users {
     this.users = [];
   }
 
-  add(id, name, room) {
+  add(id, displayName, room) {
     this.users.push({
-      id, name, room
+      id, displayName, room
     })
   }
 

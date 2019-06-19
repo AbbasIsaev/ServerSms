@@ -10,3 +10,4 @@ export const AUTH_LOADING = 'AUTH_LOADING';
 export const AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 export const AUTH_AUTO_LOGIN = 'AUTH_AUTO_LOGIN';
+export const AUTH_ERROR = 'AUTH_ERROR';

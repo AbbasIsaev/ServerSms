@@ -1,34 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const controller = require("../controllers/auth");
 
 router.get('/google/callback',
   passport.authenticate('google', {failureRedirect: '/auth/google'}),
-  function (req, res) {
-    if (req.session && req.session.socketId) {
-      console.log('callback->>' + req.session.socketId);
-      const io = req.app.get('io');
-      const data = {
-        user: req.user,
-        cookie: req.headers.cookie
-      };
+  controller.googleCallback
+);
 
-      io.in(req.session.socketId).emit('auth:google', data);
-      res.end()
-    } else {
-      res.redirect('/profile');
-    }
-  });
-
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.clearCookie(process.env.COOKIE_NAME);
-  res.clearCookie(process.env.COOKIE_NAME + ".sig");
-  res.json({
-    success: true,
-    message: 'Пользователь успешно разлогинился'
-  });
-});
+router.get('/logout', controller.logout);
 
 // This custom middleware allows us to attach the socket id to the session
 // With that socket id we can send back the right user info to the right
@@ -40,7 +20,7 @@ router.use((req, res, next) => {
 
 router.get('/google',
   passport.authenticate('google', {
-    scope: ['https://www.googleapis.com/auth/plus.login']
+    scope: ['https://www.googleapis.com/auth/plus.login', 'email']
   })
 );
 

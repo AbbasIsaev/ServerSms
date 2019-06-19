@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     displayName: {
       allowNull: false,
       type: DataTypes.STRING
+    },
+    email: {
+      type: DataTypes.STRING
     }
   }, {});
   users.associate = function (models) {

@@ -44,7 +44,7 @@ class Layout extends Component {
 
 function mapStateToProps(state) {
   return {
-    isAutenticated: !!state.auth.user
+    isAutenticated: !!state.auth.token
   }
 }
 

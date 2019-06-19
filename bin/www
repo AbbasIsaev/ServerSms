@@ -55,18 +55,18 @@ io.on('connection', (socket) => {
   console.log(`IO connection id=${socket.id}`);
 
   socket.on('join', (user, cb) => {
-    if (!user.name) {
+    if (!user.displayName) {
       return cb('Enter valid user data');
     }
-    cb({userId: socket.id, logs: logs.getLast10(user.room)});
+    cb({logs: logs.getLast10(user.room)});
     // Подлкючаем клиента в комнату
     socket.join(user.room);
 
     users.remove(socket.id);
-    users.add(socket.id, user.name, user.room);
+    users.add(socket.id, user.displayName, user.room);
     // socket.emit('message:new', message('Robot', `Logging ${userName}`));
     // Отпарвка всем подключенным клиентам кроме меня в одной комнате
-    socket.broadcast.to(user.room).emit('message:new', message('Robot', `Подключился ${user.name}`, user.room, colors.green));
+    socket.broadcast.to(user.room).emit('message:new', message('Robot', `Подключился ${user.displayName}`, user.room, colors.green));
   });
 
   socket.on('message:create', (data, cb) => {
@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
       const user = users.get(socket.id);
       if (user) {
         // Оправка всем подключенным клиентам в одной комнате
-        io.to(user.room).emit('message:new', message(user.name, data.text, user.room));
+        io.to(user.room).emit('message:new', message(user.displayName, data.text, user.room));
       }
       cb();
     }
@@ -86,14 +86,14 @@ io.on('connection', (socket) => {
     const user = users.get(socket.id);
     if (user) {
       // Оправка всем подключенным клиентам в одной комнате
-      io.to(user.room).emit('message:new', message(user.name, text, user.room));
+      io.to(user.room).emit('message:new', message(user.displayName, text, user.room));
     }
   });
 
   socket.on('disconnect', () => {
     const user = users.remove(socket.id);
     if (user) {
-      io.to(user.room).emit('message:new', message('Robot', `Отключился ${user.name}`, user.room, colors.red));
+      io.to(user.room).emit('message:new', message('Robot', `Отключился ${user.displayName}`, user.room, colors.red));
     }
   });
 });

@@ -1,4 +1,6 @@
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 const models = require('../models');
 const errorHandler = require('../utils/errorHandler');
 
@@ -29,7 +31,8 @@ module.exports = function (passport) {
     function (accessToken, refreshToken, profile, done) {
       const newData = {
         googleId: profile.id,
-        displayName: profile.displayName
+        displayName: profile.displayName,
+        email: profile.emails[0].value
       };
 
       models.users.findOrCreate({
@@ -48,6 +51,32 @@ module.exports = function (passport) {
         });
     }
   ));
+
+  const options = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.SECRET_JWT
+  };
+
+  passport.use(
+    new JwtStrategy(options, async (payload, done) => {
+      try {
+        const user = await models.users.findOne({
+          attributes: ['id', 'displayName'],
+          where: {
+            id: payload.user.id
+          }
+        });
+
+        if (user) {
+          done(null, user);
+        } else {
+          done(null, false);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    })
+  )
 };
 
 module.exports.authCheck = function (req, res, next) {

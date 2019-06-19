@@ -1,10 +1,9 @@
-import {AUTH_LOGOUT, AUTH_LOADING, AUTH_LOGIN_SUCCESS, AUTH_AUTO_LOGIN} from "../actions/actionTypes";
+import {AUTH_LOGOUT, AUTH_LOADING, AUTH_LOGIN_SUCCESS, AUTH_AUTO_LOGIN, AUTH_ERROR} from "../actions/actionTypes";
 
 const initialState = {
   token: null,
   loadingButton: false,
-  user: null,
-  provider: null
+  user: null
 };
 
 export default function authReducer(state = initialState, action) {
@@ -13,6 +12,7 @@ export default function authReducer(state = initialState, action) {
     case AUTH_LOGIN_SUCCESS:
     case AUTH_LOGOUT:
     case AUTH_AUTO_LOGIN:
+    case AUTH_ERROR:
       return {
         ...state, ...action.newObject
       };

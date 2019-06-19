@@ -28,14 +28,12 @@ class Drawer extends Component {
       cls.push(classes.close)
     }
 
-    const links = [];
+    const links = [{to: '/', label: 'Главная', exact: true}];
 
     if (this.props.isAutenticated) {
       links.push({to: '/sms', label: 'Создать СМС', exact: false});
       links.push({to: '/log', label: 'Логи', exact: false});
       links.push({to: '/logout', label: 'Выход', exact: false});
-    } else {
-      links.push({to: '/', label: 'Главная', exact: true});
     }
 
     return (

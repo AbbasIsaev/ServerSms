@@ -45,6 +45,14 @@ class Socket {
     });
   }
 
+  static offAll() {
+    socket.off();
+  }
+
+  static off(eventStr) {
+    socket.off(eventStr);
+  }
+
   static getSocketId() {
     return socket.id
   }
