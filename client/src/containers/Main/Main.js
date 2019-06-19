@@ -7,13 +7,11 @@ class Main extends Component {
   render() {
     return (
       <div className={classes.Main}>
-        <div>
-          <h1>Sms Pro</h1>
+        <h1>SMS PRO</h1>
 
-          <Auth
-            provider={'google'}
-          />
-        </div>
+        <Auth
+          provider={'google'}
+        />
       </div>
     )
   }

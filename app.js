@@ -5,6 +5,7 @@ const logger = require('morgan');
 
 const passport = require('passport');
 const cookieSession = require('cookie-session');
+const errorHandler = require('./utils/errorHandler');
 
 const indexRouter = require('./routes/index');
 const smsRouter = require('./routes/sms');
@@ -31,7 +32,19 @@ app.use(passport.initialize());
 const session = passport.session();
 app.use(session);
 require('./middleware/passportGoogle')(passport);
-const authCheckJwt = passport.authenticate('jwt', {session: false});
+const authCheckJwt = function (req, res, next) {
+  passport.authenticate('jwt', {session: false}, function (err, user) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      errorHandler.unauthorized(res);
+    } else {
+      req.user = user;
+      return next();
+    }
+  })(req, res, next);
+};
 
 app.use('/auth', authRouter);
 //================

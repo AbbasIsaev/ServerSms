@@ -10,6 +10,7 @@ import Main from "./containers/Main/Main";
 import {connect} from "react-redux";
 import Logout from "./components/UI/Logout/Logout";
 import {autoLogin} from "./store/actions/auth";
+import Body from "./containers/Body/Body";
 
 class App extends Component {
 
@@ -20,14 +21,14 @@ class App extends Component {
   render() {
     let routes = (
       <Switch>
-        <Route path="/" exact component={Main}/>
+        <Route path="/" exact component={Body}/>
         <Route component={NotFound}/>
       </Switch>
     );
     if (this.props.isAutenticated) {
       routes = (
         <Switch>
-          <Route path="/" exact component={Main}/>
+          <Route path="/" exact component={Body}/>
           <Route path="/sms" component={Sms}/>
           <Route path="/log" component={Log}/>
           <Route path="/logout" component={Logout}/>
@@ -51,6 +52,7 @@ class App extends Component {
           pauseOnHover
         />
         <Layout>
+          <Main/>
           {routes}
         </Layout>
       </div>

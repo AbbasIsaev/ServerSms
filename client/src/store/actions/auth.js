@@ -50,8 +50,13 @@ export function autoLogin() {
           }
         })
         .catch(error => {
-          toast.error(Enam.Error(error));
-          dispatch(stateChange(AUTH_ERROR, {loadingButton: false, error}));
+          if (error && error.response && error.response.status === 401) {
+            dispatch(logout());
+            window.location.href = '/';
+          } else {
+            toast.error(Enam.Error(error));
+            dispatch(stateChange(AUTH_ERROR, {loadingButton: false, error}));
+          }
         })
     }
   }

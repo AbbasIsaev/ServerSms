@@ -5,6 +5,7 @@ import Button from "../../components/UI/Button/Button";
 import {setLoadingButton, setUserAndToken, TOKEN_KEY} from "../../store/actions/auth";
 import {connect} from "react-redux";
 import Loader from "../../components/UI/Loader/Loader";
+import classes from "./Auth.scss"
 
 class Auth extends Component {
 
@@ -63,12 +64,10 @@ class Auth extends Component {
     const {provider} = this.props;
 
     return (
-      <React.Fragment>
+      <div className={classes.Auth}>
         {displayName
           ?
-          <React.Fragment>
-            <h4>{`${displayName}`}</h4>
-          </React.Fragment>
+          <h4>{`${displayName}`}</h4>
           :
           <React.Fragment>
             {this.props.loadingButton
@@ -77,12 +76,12 @@ class Auth extends Component {
               <Button
                 onClick={this.startAuth}
               >
-                {provider}
+                Войти через {provider}
               </Button>
             }
           </React.Fragment>
         }
-      </React.Fragment>
+      </div>
     )
   }
 }
