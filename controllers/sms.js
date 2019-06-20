@@ -4,7 +4,17 @@ const models = require('../models');
 const errorHandler = require('../utils/errorHandler');
 
 module.exports.getAll = function (req, res) {
-  models.sms.findAll({})
+  models.sms.findAll({
+    where: {
+      userId: req.user.id
+    },
+    include: [
+      {
+        model: models.users,
+        as: 'user'
+      }
+    ]
+  })
     .then(function (result) {
       res.json(result);
     })
@@ -16,16 +26,14 @@ module.exports.create = function (req, res) {
   models.sms.create({
     phone: req.body.phone,
     text: req.body.text,
-    dateSent: req.body.dateSent
+    dateSent: req.body.dateSent,
+    userId: req.user.id
   }).then(result => {
     res.json(result);
   }).catch(error => errorHandler(res, error));
 };
 
 module.exports.update = function (req, res) {
-  console.log('req.params 11-> ', req.params);
-  console.log('req.body 22-> ', req.body);
-
   models.sms.update({
     isSent: req.body.isSent
   }, {
@@ -45,7 +53,8 @@ module.exports.getNotSend = function (req, res) {
       isSent: false,
       dateSent: {
         [op.lte]: new Date()
-      }
+      },
+      userId: req.user.id
     }
   })
     .then(function (result) {

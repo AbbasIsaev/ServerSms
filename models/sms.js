@@ -21,10 +21,19 @@ module.exports = (sequelize, DataTypes) => {
     },
     dateSent: {
       type: DataTypes.DATE
+    },
+    userId: {
+      ref: "users",
+      type: DataTypes.INTEGER
     }
   }, {});
   sms.associate = function (models) {
     // associations can be defined here
+    sms.belongsTo(models.users, {
+      foreignKey: 'userId',
+      targetKey: 'id',
+      as: 'user'
+    });
   };
   return sms;
 };
