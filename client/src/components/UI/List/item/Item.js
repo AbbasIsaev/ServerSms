@@ -12,6 +12,7 @@ const Item = props => {
     <li className={cls.join(' ')}>
       {props.answer.name} - {props.answer.text}
       <small>
+        {props.answer.isMobile ? 'Mobile ' : null}
         {date.toLocaleDateString()} {date.toLocaleTimeString()}
       </small>
     </li>
