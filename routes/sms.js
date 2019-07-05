@@ -9,8 +9,12 @@ router.get('/', controller.getAll);
 
 router.get('/getNotSend', controller.getNotSend);
 
+router.get('/getNotSendAll', controller.getNotSendAll);
+
 router.post('/', controller.create);
 
 router.put(`/${id}`, controller.update);
+
+router.delete(`/${id}`, controller.remove);
 
 module.exports = router;

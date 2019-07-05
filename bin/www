@@ -41,9 +41,9 @@ const colors = {
   green: 'green'
 };
 
-const message = (name, text, room, isMobile, color) => {
-  const mes = {name, text, date: new Date(), room, isMobile, color};
-  logs.add(mes.name, mes.text, mes.date, room, isMobile, color);
+const message = (name, text, room, isMobile, isAutoMobile, color) => {
+  const mes = {name, text, date: new Date(), room, isMobile, isAutoMobile, color};
+  logs.add(mes.name, mes.text, mes.date, room, isMobile, isAutoMobile, color);
   return mes;
 };
 

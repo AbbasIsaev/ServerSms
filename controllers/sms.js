@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const op = Sequelize.Op;
 const models = require('../models');
 const errorHandler = require('../utils/errorHandler');
+const removeHandler = require('../utils/removeHandler');
 
 module.exports.getAll = function (req, res) {
   models.sms.findAll({
@@ -28,9 +29,11 @@ module.exports.create = function (req, res) {
     text: req.body.text,
     dateSent: req.body.dateSent,
     userId: req.user.id
-  }).then(result => {
-    res.json(result);
-  }).catch(error => errorHandler(res, error));
+  })
+    .then(result => {
+      res.json(result);
+    })
+    .catch(error => errorHandler(res, error));
 };
 
 module.exports.update = function (req, res) {
@@ -40,11 +43,13 @@ module.exports.update = function (req, res) {
     where: {
       id: req.params.id
     }
-  }).then(result => {
-    res.json({
-      id: req.params.id
-    });
-  }).catch(error => errorHandler(res, error));
+  })
+    .then(result => {
+      res.json({
+        id: req.params.id
+      });
+    })
+    .catch(error => errorHandler(res, error));
 };
 
 module.exports.getNotSend = function (req, res) {
@@ -60,5 +65,31 @@ module.exports.getNotSend = function (req, res) {
     .then(function (result) {
       res.json(result);
     })
+    .catch(error => errorHandler(res, error));
+};
+
+module.exports.getNotSendAll = function (req, res) {
+  models.sms.findAll({
+    where: {
+      isSent: false,
+      userId: req.user.id
+    },
+    order: [
+      ['dateSent', 'ASC']
+    ]
+  })
+    .then(function (result) {
+      res.json(result);
+    })
+    .catch(error => errorHandler(res, error));
+};
+
+module.exports.remove = function (req, res) {
+  models.sms.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(result => removeHandler(res))
     .catch(error => errorHandler(res, error));
 };

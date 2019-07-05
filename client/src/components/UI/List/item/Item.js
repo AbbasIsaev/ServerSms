@@ -13,6 +13,7 @@ const Item = props => {
       {props.answer.name} - {props.answer.text}
       <small>
         {props.answer.isMobile ? 'Mobile ' : null}
+        {props.answer.isAutoMobile ? 'auto ' : null}
         {date.toLocaleDateString()} {date.toLocaleTimeString()}
       </small>
     </li>
