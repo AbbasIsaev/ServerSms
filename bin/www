@@ -63,10 +63,11 @@ io.on('connection', (socket) => {
     socket.join(user.room);
 
     users.remove(socket.id);
-    users.add(socket.id, user.displayName, user.room, user.isMobile);
+    users.add(socket.id, user.displayName, user.room, user.isMobile, user.isAutoMobile);
     // socket.emit('message:new', message('Robot', `Logging ${userName}`));
-    // Отпарвка всем подключенным клиентам кроме меня в одной комнате
-    socket.broadcast.to(user.room).emit('message:new', message('Robot', `Подключился ${user.displayName}`, user.room, user.isMobile, colors.green));
+    // Отпарвка всем подключенным клиентам, кроме меня в одной комнате
+    // socket.broadcast.to(user.room).emit('message:new', message('Robot', `Подключился ${user.displayName}`, user.room, user.isMobile, user.isAutoMobile, colors.green));
+    io.to(user.room).emit('message:new', message('Robot', `Подключился ${user.displayName}`, user.room, user.isMobile, user.isAutoMobile, colors.green));
   });
 
   socket.on('message:create', (data, cb) => {
@@ -76,7 +77,7 @@ io.on('connection', (socket) => {
       const user = users.get(socket.id);
       if (user) {
         // Оправка всем подключенным клиентам в одной комнате
-        io.to(user.room).emit('message:new', message(user.displayName, data.text, user.room, user.isMobile));
+        io.to(user.room).emit('message:new', message(user.displayName, data.text, user.room, user.isMobile, user.isAutoMobile));
       }
       cb();
     }
@@ -86,14 +87,14 @@ io.on('connection', (socket) => {
     const user = users.get(socket.id);
     if (user) {
       // Оправка всем подключенным клиентам в одной комнате
-      io.to(user.room).emit('message:new', message(user.displayName, text, user.room, user.isMobile));
+      io.to(user.room).emit('message:new', message(user.displayName, text, user.room, user.isMobile, user.isAutoMobile));
     }
   });
 
   socket.on('disconnect', () => {
     const user = users.remove(socket.id);
     if (user) {
-      io.to(user.room).emit('message:new', message('Robot', `Отключился ${user.displayName}`, user.room, user.isMobile, colors.red));
+      io.to(user.room).emit('message:new', message('Robot', `Отключился ${user.displayName}`, user.room, user.isMobile, user.isAutoMobile, colors.red));
     }
   });
 });
