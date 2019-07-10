@@ -3,6 +3,7 @@ const op = Sequelize.Op;
 const models = require('../models');
 const errorHandler = require('../utils/errorHandler');
 const removeHandler = require('../utils/removeHandler');
+const gridHandler = require('../utils/gridHandler');
 
 module.exports.getAll = function (req, res) {
   models.sms.findAll({
@@ -69,11 +70,15 @@ module.exports.getNotSend = function (req, res) {
 };
 
 module.exports.getNotSendAll = function (req, res) {
+  const {skip, take} = gridHandler.getSkipAndTake(req.query);
+
   models.sms.findAll({
     where: {
       isSent: false,
       userId: req.user.id
     },
+    offset: skip,
+    limit: take,
     order: [
       ['dateSent', 'ASC']
     ]
