@@ -7,7 +7,7 @@ class Main extends Component {
   render() {
     return (
       <div className={classes.Main}>
-        <h1>SMS PRO</h1>
+        <h1>SmsApp</h1>
 
         <Auth
           provider={'google'}

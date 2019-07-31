@@ -53,7 +53,9 @@ module.exports.update = function (req, res) {
     .catch(error => errorHandler(res, error));
 };
 
-module.exports.getNotSend = function (req, res) {
+module.exports.getNotSentToDate = function (req, res) {
+  const {skip, take} = gridHandler.getSkipAndTake(req.query, null, null);
+
   models.sms.findAll({
     where: {
       isSent: false,
@@ -61,7 +63,12 @@ module.exports.getNotSend = function (req, res) {
         [op.lte]: new Date()
       },
       userId: req.user.id
-    }
+    },
+    offset: skip,
+    limit: take,
+    order: [
+      ['dateSent', 'ASC']
+    ]
   })
     .then(function (result) {
       res.json(result);
@@ -69,7 +76,7 @@ module.exports.getNotSend = function (req, res) {
     .catch(error => errorHandler(res, error));
 };
 
-module.exports.getNotSendAll = function (req, res) {
+module.exports.getNotSentAll = function (req, res) {
   const {skip, take} = gridHandler.getSkipAndTake(req.query);
 
   models.sms.findAll({

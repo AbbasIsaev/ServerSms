@@ -83,8 +83,8 @@ module.exports.getSort = function (state) {
   return {sort, order};
 };
 
-module.exports.getSkipAndTake = function (state) {
-  const take = state.take ? +state.take : 50;
-  const skip = state.skip ? +state.skip : state.page ? +state.page * take : 0;
+module.exports.getSkipAndTake = function (state, takeDefault = 50, skipDefault = 0) {
+  const take = state.take ? +state.take : takeDefault;
+  const skip = state.skip ? +state.skip : state.page ? +state.page * take : skipDefault;
   return {skip, take};
 };

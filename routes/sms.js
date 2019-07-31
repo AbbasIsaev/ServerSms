@@ -7,9 +7,9 @@ const id = `:id`;
 
 router.get('/', controller.getAll);
 
-router.get('/getNotSend', controller.getNotSend);
+router.get('/getNotSentToDate', controller.getNotSentToDate);
 
-router.get('/getNotSendAll', controller.getNotSendAll);
+router.get('/getNotSentAll', controller.getNotSentAll);
 
 router.post('/', controller.create);
 

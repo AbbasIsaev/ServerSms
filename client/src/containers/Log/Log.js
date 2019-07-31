@@ -57,11 +57,18 @@ class Log extends Component {
     });
   };
 
+  clearHandler = () => {
+    const answers = {
+      answers: []
+    };
+    this.setState(answers);
+  };
+
   render() {
     return (
       <div className={classes.Log}>
         <div>
-          <h1>Лог</h1>
+          <h1>Логи</h1>
           <div ref={this.refAnswers}>
             <List
               answers={this.state.answers}
@@ -71,9 +78,9 @@ class Log extends Component {
 
         <button
           className={classes.scroll}
-          onClick={this.createHandler}
+          onClick={this.clearHandler}
         >
-          Добавить
+          Очистить
         </button>
         <ScrollButton scrollStepInPx="50" delayInMs="16.66"/>
       </div>

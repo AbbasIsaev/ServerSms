@@ -31,7 +31,7 @@ class Drawer extends Component {
     const links = [{to: '/', label: 'Главная', exact: true}];
 
     if (this.props.isAutenticated) {
-      links.push({to: '/sms', label: 'Создать СМС', exact: false});
+      links.push({to: '/sms', label: 'Создать SMS', exact: false});
       links.push({to: '/log', label: 'Логи', exact: false});
       links.push({to: '/logout', label: 'Выход', exact: false});
     }

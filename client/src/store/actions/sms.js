@@ -13,7 +13,7 @@ import {
 export function fetchCountSms() {
   return dispatch => {
     dispatch(stateChange(FETCH_COUNT_SMS_START, {loading: true}));
-    axios.get("/api/sms/getNotSend")
+    axios.get("/api/sms/getNotSentToDate")
       .then(response => {
         const countSms = response.data.length;
 
